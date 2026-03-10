@@ -118,7 +118,6 @@ elif page == "Pokédex":
 
 elif page == "About":
     st.title("ℹ️ About This App")
-    st.write("""
 Welcome to the **Pokédex App**! This app lets you:
 - Select a starter Pokémon and track your Trainer Level
 - Explore all **151 Generation 1 Pokémon**
