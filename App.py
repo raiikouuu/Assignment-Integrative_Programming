@@ -1,25 +1,37 @@
 import streamlit as st
 
-st.title("My First Streamlit App")
+st.set_page_config(page_title="Pokémon App", page_icon="⚡", layout="centered")
 
-st.header("Welcome!")
+st.title("⚡ Pokémon Trainer App")
+st.subheader("Welcome, Trainer!")
 
-st.write("This is a simple page created using Streamlit.")
+st.write("Choose your Pokémon and learn about it.")
 
-name = st.text_input("Enter your name:")
+pokemon_data = {
+    "Pikachu": {"Type": "Electric", "Description": "Pikachu stores electricity in its cheeks and releases it in battle."},
+    "Charmander": {"Type": "Fire", "Description": "Charmander has a flame on its tail that shows its strength."},
+    "Squirtle": {"Type": "Water", "Description": "Squirtle uses its shell for protection and shoots water."},
+    "Bulbasaur": {"Type": "Grass / Poison", "Description": "Bulbasaur carries a plant seed on its back that grows."}
+}
 
-if st.button("Submit"):
-    st.success(f"Hello, {name}! Welcome to the app.")
+pokemon = st.selectbox("Choose your Pokémon:", list(pokemon_data.keys()))
 
-age = st.slider("Select your age", 10, 50)
+if st.button("Show Pokémon Info"):
+    st.success(f"You chose {pokemon}!")
+    st.write("**Type:**", pokemon_data[pokemon]["Type"])
+    st.write("**Description:**", pokemon_data[pokemon]["Description"])
 
-st.write("Your age is:", age)
+trainer = st.text_input("Enter your Trainer Name:")
 
-if st.checkbox("Show message"):
-    st.write("Streamlit makes Python apps easy to build!")
+if st.button("Start Journey"):
+    if trainer:
+        st.balloons()
+        st.success(f"Good luck on your adventure, Trainer {trainer}!")
+    else:
+        st.warning("Please enter your trainer name.")
 
-st.subheader("Sample Data")
+st.subheader("Mini Pokédex")
 st.table({
-    "Name": ["John", "Anna", "Mike"],
-    "Score": [90, 85, 88]
+    "Pokémon": ["Pikachu", "Charmander", "Squirtle", "Bulbasaur"],
+    "Type": ["Electric", "Fire", "Water", "Grass/Poison"]
 })
