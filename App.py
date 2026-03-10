@@ -23,6 +23,24 @@ text-shadow:2px 2px 4px black;
 """
 st.markdown(BACKGROUND, unsafe_allow_html=True)
 
+type_sprites = {
+"Normal":"https://archives.bulbagarden.net/media/upload/8/83/Normal_icon_SwSh.png",
+"Fire":"https://archives.bulbagarden.net/media/upload/a/ab/Fire_icon_SwSh.png",
+"Water":"https://archives.bulbagarden.net/media/upload/8/80/Water_icon_SwSh.png",
+"Electric":"https://archives.bulbagarden.net/media/upload/7/7b/Electric_icon_SwSh.png",
+"Grass":"https://archives.bulbagarden.net/media/upload/a/a8/Grass_icon_SwSh.png",
+"Ice":"https://archives.bulbagarden.net/media/upload/1/15/Ice_icon_SwSh.png",
+"Fighting":"https://archives.bulbagarden.net/media/upload/7/7d/Fighting_icon_SwSh.png",
+"Poison":"https://archives.bulbagarden.net/media/upload/8/8d/Poison_icon_SwSh.png",
+"Ground":"https://archives.bulbagarden.net/media/upload/8/8f/Ground_icon_SwSh.png",
+"Flying":"https://archives.bulbagarden.net/media/upload/b/b5/Flying_icon_SwSh.png",
+"Psychic":"https://archives.bulbagarden.net/media/upload/7/73/Psychic_icon_SwSh.png",
+"Bug":"https://archives.bulbagarden.net/media/upload/9/9c/Bug_icon_SwSh.png",
+"Rock":"https://archives.bulbagarden.net/media/upload/b/bb/Rock_icon_SwSh.png",
+"Ghost":"https://archives.bulbagarden.net/media/upload/0/01/Ghost_icon_SwSh.png",
+"Dragon":"https://archives.bulbagarden.net/media/upload/0/03/Dragon_icon_SwSh.png"
+}
+
 @st.cache_data
 def get_gen1_pokemon():
     url = "https://pokeapi.co/api/v2/pokemon?limit=151"
@@ -48,20 +66,23 @@ def get_pokemon_info(name):
     return sprite, types, stats
 
 
-def get_weakness(types):
+def get_type_matchup(type_name):
 
-    weaknesses = set()
+    data = requests.get(
+        f"https://pokeapi.co/api/v2/type/{type_name.lower()}"
+    ).json()
 
-    for t in types:
+    strengths = [
+        t["name"].capitalize()
+        for t in data["damage_relations"]["double_damage_to"]
+    ]
 
-        data = requests.get(
-            f"https://pokeapi.co/api/v2/type/{t.lower()}"
-        ).json()
+    weaknesses = [
+        t["name"].capitalize()
+        for t in data["damage_relations"]["double_damage_from"]
+    ]
 
-        for w in data["damage_relations"]["double_damage_from"]:
-            weaknesses.add(w["name"].capitalize())
-
-    return list(weaknesses)
+    return strengths, weaknesses
 
 pokemon_list = get_gen1_pokemon()
 
@@ -69,65 +90,64 @@ page = st.sidebar.selectbox("Navigation", ["Home", "Pokédex"])
 
 if page == "Home":
 
-    st.title("Pokémon Trainer Home")
+    st.title("⚪ Pokémon Trainer Home")
 
     trainer = st.text_input("Trainer Name")
 
-    level = st.slider("Trainer Level", 1, 100, 10)
+    level = st.slider("Trainer Level",1,100,10)
 
     starter = st.radio(
-        "Choose your Starter Pokémon",
-        ["Bulbasaur", "Charmander", "Squirtle"]
+        "Choose Starter Pokémon",
+        ["Bulbasaur","Charmander","Squirtle"]
     )
 
     if st.button("Start Adventure"):
 
         sprite, types, stats = get_pokemon_info(starter)
 
-        st.success(f"Trainer {trainer} chose {starter}!")
+        st.success(f"Trainer {trainer} chose {starter}")
 
-        st.image(sprite, width=200)
+        st.image(sprite,width=200)
 
-        st.write("Type:", ", ".join(types))
+        st.write("Type:",", ".join(types))
 
         st.balloons()
 
     st.divider()
 
-    st.subheader("🎲 Discover a Random Pokémon")
+    st.subheader("🎮 Pokémon Type Guide")
 
-    if st.button("Generate Random Pokémon"):
+    cols = st.columns(5)
 
-        random_pokemon = random.choice(pokemon_list)
+    for i, type_name in enumerate(type_sprites):
 
-        sprite, types, stats = get_pokemon_info(random_pokemon)
+        with cols[i % 5]:
 
-        st.write(f"You discovered **{random_pokemon}**!")
+            st.image(type_sprites[type_name],width=60)
 
-        st.image(sprite, width=200)
+            if st.button(type_name):
 
-        st.write("Type:", ", ".join(types))
+                strengths, weaknesses = get_type_matchup(type_name)
+
+                st.subheader(type_name)
+
+                st.write("⚔️ Strong Against:", ", ".join(strengths) if strengths else "None")
+
+                st.write("⚠️ Weak Against:", ", ".join(weaknesses) if weaknesses else "None")
 
 elif page == "Pokédex":
 
     st.title("📖 Gen 1 Pokédex")
 
-    selected = st.selectbox(
-        "Choose a Pokémon",
-        pokemon_list
-    )
+    selected = st.selectbox("Choose a Pokémon", pokemon_list)
 
     sprite, types, stats = get_pokemon_info(selected)
 
-    weaknesses = get_weakness(types)
-
-    st.image(sprite, width=200)
+    st.image(sprite,width=200)
 
     st.subheader(selected)
 
-    st.write("**Type:**", ", ".join(types))
-
-    st.write("⚠️ **Weakness:**", ", ".join(weaknesses))
+    st.write("Type:",", ".join(types))
 
     st.divider()
 
@@ -135,7 +155,7 @@ elif page == "Pokédex":
 
     stats_df = pd.DataFrame(
         list(stats.items()),
-        columns=["Stat", "Base Value"]
+        columns=["Stat","Base Value"]
     )
 
     st.table(stats_df)
