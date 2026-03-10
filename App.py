@@ -4,13 +4,9 @@ import random
 import pandas as pd
 
 POKEBALL_ICON = "https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg"
-st.set_page_config(
-    page_title="Pokédex App",
-    page_icon=POKEBALL_ICON,
-    layout="centered"
-)
+st.set_page_config(page_title="Pokédex App", page_icon=POKEBALL_ICON, layout="centered")
 
-BACKGROUND = """
+st.markdown("""
 <style>
 [data-testid="stAppViewContainer"]{
 background-image:url("https://e0.pxfuel.com/wallpapers/147/62/desktop-wallpaper-pokemon-pokedex.jpg");
@@ -25,8 +21,7 @@ color:#FFD700;
 text-shadow:2px 2px 4px black;
 }
 </style>
-"""
-st.markdown(BACKGROUND, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 type_icons = {
 "Normal":"https://raw.githubusercontent.com/duiker101/pokemon-type-svg-icons/master/icons/normal.svg",
@@ -67,17 +62,16 @@ def get_type_matchup(type_name):
 
 pokemon_list = get_gen1_pokemon()
 
-page = st.sidebar.selectbox("Navigation", ["Home", "Pokédex"])
+page = st.sidebar.selectbox("Navigation", ["Home", "Pokédex", "About"])
 
 if page == "Home":
-
     st.title("⚪ Pokémon Trainer Home")
 
     trainer = st.text_input("Trainer Name")
 
     level = st.slider("Trainer Level", 1, 100, 10)
 
-    starter = st.radio("Choose Starter Pokémon", ["Bulbasaur", "Charmander", "Squirtle"])
+    starter = st.radio("Choose Starter Pokémon", ["Bulbasaur","Charmander","Squirtle"])
 
     if st.button("Start Adventure"):
         sprite, types, stats = get_pokemon_info(starter)
@@ -91,7 +85,6 @@ if page == "Home":
     st.subheader("🎮 Pokémon Type Guide")
 
     cols = st.columns(5)
-
     for i, type_name in enumerate(type_icons):
         with cols[i % 5]:
             st.image(type_icons[type_name], width=50)
@@ -113,18 +106,29 @@ if page == "Home":
         st.write("Type:", ", ".join(types))
 
 elif page == "Pokédex":
-
     st.title("📖 Gen 1 Pokédex")
-
     selected = st.selectbox("Choose a Pokémon", pokemon_list)
-
     sprite, types, stats = get_pokemon_info(selected)
-
     st.image(sprite, width=200)
     st.subheader(selected)
     st.write("Type:", ", ".join(types))
-
     st.divider()
-    st.subheader("📊 Base Stats")
-    stats_df = pd.DataFrame(list(stats.items()), columns=["Stat", "Base Value"])
+    stats_df = pd.DataFrame(list(stats.items()), columns=["Stat","Base Value"])
     st.table(stats_df)
+
+elif page == "About":
+    st.title("ℹ️ About This App")
+    st.write("""
+Welcome to the **Pokédex App**! This app lets you:
+- Select a starter Pokémon and track your Trainer Level
+- Explore all **151 Generation 1 Pokémon**
+- See Pokémon types, strengths, and weaknesses
+- Generate a random Pokémon for fun
+- Check Pokémon base stats
+
+This app is made using **Streamlit** and **PokéAPI**, perfect for Pokémon fans and school ICT projects!
+    """)
+
+    st.markdown("Created with ❤️ using Python and Streamlit")
+    st.success("Try exploring the Pokémon types and stats!")
+    st.info("Click on the type icons on Home to see strengths and weaknesses.")
