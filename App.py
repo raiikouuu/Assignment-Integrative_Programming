@@ -66,7 +66,7 @@ page = st.sidebar.selectbox("Navigation", ["Home", "Pokédex", "About"])
 
 if page == "Home":
 
-    st.title("⚪ Pokémon Trainer Home")
+    st.title("Pokémon Trainer Home")
 
     trainer = st.text_input("Trainer Name")
     level = st.slider("Trainer Level", 1, 100, 10)
