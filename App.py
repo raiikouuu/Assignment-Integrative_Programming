@@ -118,14 +118,30 @@ elif page == "Pokédex":
 elif page == "About":
 
     st.title("ℹ️ About This App")
+
     st.write("""
-Hi there! 👋 I made this **Pokédex App** for fellow Pokémon enthusiasts to enjoy and learn.  
+*Pokédex App* is an interactive Pokémon application designed to help fans explore, learn, and have fun with Generation 1 Pokémon.
 
-You can:
-- Choose your starter Pokémon
-- Explore all 151 Generation 1 Pokémon
-- Check Pokémon types, strengths, and weaknesses
-- Generate random Pokémon and learn about their stats  
+*Use-case:*  
+- Discover Pokémon, their types, strengths, weaknesses, and base stats.  
+- Generate random Pokémon for exploration and learning.  
+- Select a starter Pokémon and simulate a mini Pokémon trainer experience.
 
-I hope this app brings some fun and helps you learn more about Pokémon!
+*Target User:*  
+- Pokémon enthusiasts, students, or anyone interested in learning about Pokémon types and stats in an interactive way.
+
+*Inputs Collected:*  
+- Trainer Name  
+- Trainer Level  
+- Starter Pokémon selection  
+- Pokémon type clicks  
+- Random Pokémon generation  
+- Pokémon selection from the Pokédex dropdown  
+
+*Outputs Displayed:*  
+- Pokémon sprites  
+- Pokémon types  
+- Strengths and weaknesses of types  
+- Base stats of Pokémon  
+- Fun interactions like balloons and random Pokémon discoveries
     """)
