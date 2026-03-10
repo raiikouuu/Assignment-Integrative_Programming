@@ -11,7 +11,7 @@ st.set_page_config(
 BACKGROUND = """
 <style>
 [data-testid="stAppViewContainer"]{
-background-image:url("https://wallpaperaccess.com/full/170249.jpg");
+background-image:url("https://e0.pxfuel.com/wallpapers/147/62/desktop-wallpaper-pokemon-pokedex.jpg");
 background-size:cover;
 background-position:center;
 }
