@@ -1,9 +1,8 @@
 import streamlit as st
 
-st.set_page_config(page_title="Pokémon App", page_icon="⚡")
+st.set_page_config(page_title="Pokémon Trainer App", page_icon="⚪")
 
-st.title("⚡ Pokémon Trainer App")
-st.write("Click a Pokémon name to see its photo!")
+page = st.sidebar.selectbox("Navigation", ["Home", "Pokédex"])
 
 pokemon_data = {
     "Pikachu": {
@@ -25,23 +24,54 @@ pokemon_data = {
         "Type": "Grass / Poison",
         "Description": "Bulbasaur has a plant seed on its back.",
         "Image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+    },
+    "Jigglypuff": {
+        "Type": "Fairy",
+        "Description": "Jigglypuff sings a lullaby that makes enemies sleep.",
+        "Image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png"
+    },
+    "Meowth": {
+        "Type": "Normal",
+        "Description": "Meowth loves shiny coins and treasures.",
+        "Image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png"
     }
 }
 
-pokemon = st.radio("Choose your Pokémon:", list(pokemon_data.keys()))
+if page == "Home":
+    st.title("⚪ Pokémon Trainer App")
+    st.subheader("Welcome, Trainer!")
 
-st.subheader(pokemon)
+    trainer = st.text_input("Enter your Trainer Name:")
 
-st.image(pokemon_data[pokemon]["Image"], width=200)
+    if st.button("Start Journey"):
+        if trainer:
+            st.success(f"Welcome to your adventure, Trainer {trainer}!")
+            st.balloons()
+        else:
+            st.warning("Please enter your trainer name.")
 
-st.write("**Type:**", pokemon_data[pokemon]["Type"])
-st.write("**Description:**", pokemon_data[pokemon]["Description"])
+elif page == "Pokédex":
 
-trainer = st.text_input("Enter your Trainer Name:")
+    st.title("📖 Pokédex")
 
-if st.button("Start Journey"):
-    if trainer:
-        st.success(f"Good luck on your adventure, Trainer {trainer}!")
-        st.balloons()
-    else:
-        st.warning("Please enter your trainer name.")
+    selected_pokemon = st.selectbox("Choose a Pokémon", list(pokemon_data.keys()))
+
+    st.subheader(selected_pokemon)
+
+    st.image(pokemon_data[selected_pokemon]["Image"], width=200)
+
+    st.write("**Type:**", pokemon_data[selected_pokemon]["Type"])
+    st.write("**Description:**", pokemon_data[selected_pokemon]["Description"])
+
+    st.divider()
+
+    st.subheader("All Pokémon")
+
+    cols = st.columns(3)
+
+    i = 0
+    for name, info in pokemon_data.items():
+        with cols[i % 3]:
+            st.image(info["Image"], width=100)
+            st.caption(name)
+        i += 1
