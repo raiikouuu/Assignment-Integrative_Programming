@@ -65,12 +65,11 @@ pokemon_list = get_gen1_pokemon()
 page = st.sidebar.selectbox("Navigation", ["Home", "Pokédex", "About"])
 
 if page == "Home":
+
     st.title("⚪ Pokémon Trainer Home")
 
     trainer = st.text_input("Trainer Name")
-
     level = st.slider("Trainer Level", 1, 100, 10)
-
     starter = st.radio("Choose Starter Pokémon", ["Bulbasaur","Charmander","Squirtle"])
 
     if st.button("Start Adventure"):
@@ -83,7 +82,6 @@ if page == "Home":
     st.divider()
 
     st.subheader("🎮 Pokémon Type Guide")
-
     cols = st.columns(5)
     for i, type_name in enumerate(type_icons):
         with cols[i % 5]:
@@ -97,7 +95,6 @@ if page == "Home":
     st.divider()
 
     st.subheader("🎲 Discover a Random Pokémon")
-
     if st.button("Generate Random Pokémon"):
         random_pokemon = random.choice(pokemon_list)
         sprite, types, stats = get_pokemon_info(random_pokemon)
@@ -106,6 +103,7 @@ if page == "Home":
         st.write("Type:", ", ".join(types))
 
 elif page == "Pokédex":
+
     st.title("📖 Gen 1 Pokédex")
     selected = st.selectbox("Choose a Pokémon", pokemon_list)
     sprite, types, stats = get_pokemon_info(selected)
@@ -113,16 +111,21 @@ elif page == "Pokédex":
     st.subheader(selected)
     st.write("Type:", ", ".join(types))
     st.divider()
+    st.subheader("📊 Base Stats")
     stats_df = pd.DataFrame(list(stats.items()), columns=["Stat","Base Value"])
     st.table(stats_df)
 
 elif page == "About":
-    st.title("ℹ️ About This App")
-Welcome to the **Pokédex App**! This app lets you:
-- Select a starter Pokémon and track your Trainer Level
-- Explore all **151 Generation 1 Pokémon**
-- See Pokémon types, strengths, and weaknesses
-- Generate a random Pokémon for fun
-- Check Pokémon base stats
 
-This app is made for those pokemon enthusiast as my self to enjoy and learn more about pokemon.
+    st.title("ℹ️ About This App")
+    st.write("""
+Hi there! 👋 I made this **Pokédex App** for fellow Pokémon enthusiasts to enjoy and learn.  
+
+You can:
+- Choose your starter Pokémon
+- Explore all 151 Generation 1 Pokémon
+- Check Pokémon types, strengths, and weaknesses
+- Generate random Pokémon and learn about their stats  
+
+I hope this app brings some fun and helps you learn more about Pokémon!
+    """)
