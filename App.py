@@ -126,9 +126,4 @@ Welcome to the **Pokédex App**! This app lets you:
 - Generate a random Pokémon for fun
 - Check Pokémon base stats
 
-This app is made using **Streamlit** and **PokéAPI**, perfect for Pokémon fans and school ICT projects!
-    """)
-
-    st.markdown("Created with ❤️ using Python and Streamlit")
-    st.success("Try exploring the Pokémon types and stats!")
-    st.info("Click on the type icons on Home to see strengths and weaknesses.")
+This app is made for those pokemon enthusiast as my self to enjoy and learn more about pokemon.
